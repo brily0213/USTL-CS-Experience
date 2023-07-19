@@ -1,0 +1,56 @@
+//背包问题
+
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#define C 18
+#define N 7
+using namespace std;
+int w[N]= {0,2,9,8,6,10,8}, v[N]= {0,9,3,18,11,7,12}, m[N][C]= {0};
+
+void Knapsack(int c, int n)
+{
+    int jMax=w[n]-1<c ? w[n]-1 : c;
+    int j;
+    for(j=0; j<=jMax; j++) m[n][j]=0;
+    for(j=w[n]; j<=c; j++) m[n][j]=v[n];
+    for(int i=n-1; i>1; i--)
+    {
+        jMax=w[i]-1<c ? w[i]-1 : c;
+        for(j=1; j<=jMax; j++) m[i][j]=m[i+1][j];
+        for(j=w[i]; j<=c; j++)
+            m[i][j]=m[i+1][j]>m[i+1][j-w[i]]+v[i]?m[i+1][j]:m[i+1][j-w[i]]+v[i];
+    }
+    m[1][c]=m[2][c];
+    if(c>=w[1]) m[1][c]=m[1][c]>m[2][c-w[1]]+v[1]?m[1][c]:m[2][c-w[1]]+v[1];
+} // 算法的时间复杂度为O(nc)
+
+void Traceback(int c, int n, int x[])
+{
+    for(int i=1; i<n; i++)
+        if(m[i][c]==m[i+1][c]) x[i]=0;
+        else
+        {
+            x[i]=1;
+            c-=w[i];
+        }
+    x[n]=m[n][c]>0 ? 1 : 0;
+}
+
+int main()
+{
+    int x[N]= {0};
+    Knapsack(C, N-1);
+    Traceback(C, N-1, x);
+    cout<<endl<<" C=\t"<<C<<endl<<" x:\t";
+    int w1=0, v1=0;
+    for(int i=1; i<N; i++)
+    {
+        cout<<x[i]<<'\t';
+        w1+=x[i]*w[i];
+        v1+=x[i]*v[i];
+    }
+    cout<<endl<<"Weight=\t"<<w1<<endl;
+    cout<<"Value=\t"<<v1<<endl<<endl;
+    return 0;
+}

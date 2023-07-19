@@ -1,0 +1,19 @@
+//ÊäÈën Êä³ön! ·Çµİ¹é
+
+#include <iostream>
+using namespace std;
+long int fun(int n)
+{
+    int t=1,i;
+    for (i=1; i<=n; i++)
+        t=t*i;
+    return t;
+}
+int main()
+{
+    int n;
+    cin>>n;
+    cout<<fun(n);
+    return 0;
+}
+

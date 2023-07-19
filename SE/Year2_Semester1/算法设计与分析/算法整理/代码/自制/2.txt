@@ -1,0 +1,64 @@
+//活动安排
+
+#include <iostream>
+//#include <cstdio>
+#define N 11
+#include <algorithm>
+using namespace std;
+class Activity
+{
+public:
+    int operator<=(Activity a) const
+    {
+        return (f<=a.f);
+    }
+    int s,f;
+    int  index;
+};
+bool compare(Activity a, Activity b)      // sort使用
+{
+    return a.f<b.f;                 //return a<b，为升序
+}
+void GreedySelector(int n, int s[], int f[], bool A[],int t[])
+{
+    int i;
+    Activity *d=new Activity[n+1];
+    for (i=1; i<=n; i++)
+    {
+        d[i].s=s[i];     //start time
+        d[i].f=f[i];     // finish  time
+        d[i].index=i;
+    }   // 活动编号1,  2,  3
+    sort(d+1, d+N+1, compare);
+    for (i=1; i<=n; i++)
+    {
+        s[i]=d[i].s;
+        f[i]=d[i].f;
+        A[i]=0;
+        t[i]=d[i].index;
+    }
+    A[t[1]]=1;
+    int j=1;
+    for (i=2; i<=n; i++ )
+        if (s[i]>=f[j])
+        {
+            A[t[i]]=1;
+            j=i;
+        }
+        else A[t[i]]=0;
+    delete d;
+}
+int main()
+{
+    int s[]= {0,3,1,0,5,3,5,6,8,8,2,12};
+    int f[]= {0,5,4,6,7,8,9,10,11,12,13,14};
+//    int x[N+1]= {0};
+    int t[N+1]= {0};
+    bool A[N+1]= {0};
+    GreedySelector(N, s, f, A,t);
+    for (int i=1; i<=N; i++)
+        if (A[i])
+            cout<<"项目 "<<i<<" ["<<s[t[i]]<<","<<f[t[i]]<<"]"<<endl;
+            //printf("项目 %d [%d,%d]\n",i,s[t[i]],f[t[i]]);
+    return 0;
+}

@@ -1,0 +1,42 @@
+//最优装载问题可用贪心算法求最优解。采用重量最轻者先装的贪心选择策略：
+#include <iostream>
+#include <cstdio>
+using namespace std;
+
+void sort(int a[],int t[],int n)
+{
+    int temp,min,i;
+    for(i=1; i<=n; i++)  t[i]=i;
+    for( i=1; i<=n; i++)
+    {
+        min=i;
+        for(int j=i+1; j<=n; j++)
+            if(a[j]<a[min]) min=j;     //对i之后的数进行扫描将最小的数赋予min
+        temp=a[i];
+        a[i]=a[min];
+        a[min]=temp;
+        temp=t[i];
+        t[i]=t[min];
+        t[min]=temp;
+    }
+}
+void Loading(int x[],int w[],int c,int n)
+{
+    int *t = new int [n+1];
+    int i;
+    sort(w, t, n);
+    for (i=1; i<=n&&w[i]<=c; i++)
+    {
+        x[t[i]]=1;
+        c-=w[i];
+    }
+}
+int main()  //用main函数验证
+{
+    int w[9]= {0,100,200,50,90,150,50,20,80},x[9]= {0};
+    int c=400;
+    Loading(x,w,c,8);
+    for(int i=1; i<=8; i++)
+        printf("%d\t",x[i]);
+    return 0;
+}

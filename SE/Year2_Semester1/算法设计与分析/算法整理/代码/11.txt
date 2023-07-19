@@ -1,0 +1,36 @@
+//已知有n个元素。求最大数（或最小数）下标
+//利用递归降序排序
+
+#include <iostream>
+using namespace std;
+int searchIndex(int A[], int L, int R)
+{
+    if (L == R)   return R;
+    else
+    {
+        int M = (L + R) / 2;
+        int ml = searchIndex(A, L, M);
+        int mr = searchIndex(A, M + 1, R);
+        return A[ml] > A[mr] ? ml : mr;
+    }
+}
+void sort(int A[], int L, int R)
+{
+    if (L < R)
+    {
+        int m = searchIndex(A, L, R);
+        swap(A[L], A[m]);
+        sort(A, L + 1, R);
+    }
+}
+// 以下为测试
+int main()
+{
+    const int n = 8;
+    int A[n]= {30,11,42,22,1,55,21,43};
+    sort(A, 0, n - 1);
+    for (int i = 0; i < n; ++i)
+        cout << A[i] << "\t";
+}
+
+

@@ -1,0 +1,112 @@
+//旅行员售货问题 回溯法求解 
+
+#include <fstream>
+#include <iostream>
+using namespace std;
+ifstream fin("ex3.txt");
+
+const int N = 4;//图的顶点数
+template <class Type>
+class Traveling
+{
+    friend Type TSP(Type **,int [],int,Type);
+private:
+    void Backtrack(int i);
+    int n,           // 图G的顶点数
+        *x,          // 当前解
+        *bestx;      // 当前最优解
+    Type **a,    // 图G的领接矩阵
+		cc,          // 当前费用
+		bestc,       // 当前最优值
+		NoEdge;  // 无边标记
+};
+
+
+template<class Type>
+void Traveling<Type>::Backtrack(int i)
+{
+    if (i == n)
+    {
+        if (a[x[n-1]][x[n]] != NoEdge && a[x[n]][1] != NoEdge &&
+			(cc + a[x[n-1]][x[n]] + a[x[n]][1] < bestc || bestc == NoEdge))
+        {
+            for (int j = 1; j <= n; j++) bestx[j] = x[j];
+            bestc = cc + a[x[n-1]][x[n]] + a[x[n]][1];
+        }
+    }
+    else
+    {
+        for (int j = i; j <= n; j++)
+        {
+            // 是否可进入x[j]子树?
+            if (a[x[i-1]][x[j]] != NoEdge && (cc + a[x[i-1]][x[i]] < bestc || bestc == NoEdge))
+            {
+                // 搜索子树
+                swap(x[i], x[j]);
+                cc += a[x[i-1]][x[i]];  //当前费用累加
+                Backtrack(i+1);         //排列向右扩展,排列树向下一层扩展
+                cc -= a[x[i-1]][x[i]];
+                swap(x[i], x[j]);
+            }
+        }
+    }
+}
+
+template<class Type>
+Type TSP(Type **a, int v[],int n,Type NoEdge)
+{
+    Traveling<Type> Y;
+    Y.x=new int[n+1];
+    for(int i=1; i<=n; i++)
+        Y.x[i]=i;
+    Y.a=a;
+    Y.n=n;
+    Y.bestc=NoEdge;
+    Y.bestx=v;
+    Y.cc=0;
+    Y.NoEdge=NoEdge;
+    Y.Backtrack(2);
+    delete [] Y.x;
+    return Y.bestc;
+}
+
+template <class Type>
+inline void Swap(Type &a, Type &b)
+{
+    Type temp=a;
+    a=b;
+    b=temp;
+}
+
+int main()
+{
+    cout<<"图的顶点个数 n="<<N<<endl;
+    int *bestx=new int [N+1];
+	
+    int **a=new int*[N+1];
+    for(int i=0; i<=N; i++)
+        a[i]=new int[N+1];
+	
+    for( i=0; i<=N; i++)
+        bestx[i]=0;
+    cout<<"图的邻接矩阵为:"<<endl;
+    for(i=1; i<=N; i++)
+    {
+        for(int j=1; j<=N; j++)
+        {
+            fin>>a[i][j];
+            cout<<a[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<"最短回路的长为："<<TSP(a,bestx,N,0)<<endl;
+    cout<<"最短回路为is ："<<endl;
+    for( i=1; i<=N; i++)
+        cout<<bestx[i]<<" --> ";
+    cout<<bestx[1]<<endl;
+    delete bestx;
+    for(i=0; i<=N; i++)
+        delete []a[i];
+    delete []a;
+    return 0;
+}

@@ -1,0 +1,20 @@
+//ÊäÈën Êä³ön! µİ¹é
+
+#include <iostream>
+using namespace std;
+
+long fun(int n)
+{
+    if (n==0)
+        return(1);
+    else
+        return(n*fun(n-1));
+}
+int main()
+{
+    int n;
+    cin>>n;
+    cout<<endl<<fun(n);
+    return 0;
+}
+

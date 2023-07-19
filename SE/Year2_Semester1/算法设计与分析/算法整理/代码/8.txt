@@ -1,0 +1,33 @@
+//已知s有n个元素。求s的最大元素。普通方法
+
+#include <iostream>
+using namespace std;
+
+int max(int a,int b) //求两个数最大函数
+{
+    return (a>b?a:b);
+}
+int searchmax(int s[],int left,int right) //分治函数
+{
+    if (left == right || (left+1) == right)  //剩下两个元素或一个元素
+    {
+        int max1=s[left];
+        int max2=s[right];
+        return max(max1,max2);
+    }
+    else
+    {
+        int middle = (left+right)/2;
+        int max1 = searchmax(s,left,middle);
+        int max2 = searchmax(s,middle+1,right);
+        return(max(max1,max2));
+    }
+}
+main()  //主程序
+{
+    int a[] = {100,30,7,50,9,90};
+    int max = searchmax(a,0,5);
+    cout<<"max= "<<max<<endl;
+    return 0;
+}
+

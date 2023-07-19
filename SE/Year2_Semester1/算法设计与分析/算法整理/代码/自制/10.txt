@@ -1,0 +1,135 @@
+//背包
+
+#include <algorithm>
+#include <iostream>
+using namespace std;
+template<class Typew,class Typep>
+class Knap
+{
+    friend Typep Knapsack(Typep [],Typew [],Typew,int);
+private:
+    Typep Bound(int i);
+    void Backtrack(int i);
+    Typew c;    //背包容量
+    int n;      //物品数
+    Typew *w;   //物品重量数组
+    Typep *p;   //物品价值数组
+    Typew cw;   //当前重量
+    Typep cp;   //当前价值
+    Typep bestp;//当前最后价值
+};
+class Object
+{
+    friend int Knapsack(int *,int *,int,int);
+public:
+    int operator <= (Object a) const
+    {
+        return (d>=a.d);
+    }
+    // private:
+    int ID;
+    float d;
+};
+bool compare(Object a, Object b)
+{
+    return a.d>b.d;
+//降序排列，如果改为return a<b，则为升序
+}
+template<class Typew,class Typep>
+void Knap<Typew,Typep>::Backtrack(int i)
+{
+    if(i>n)//到达叶子节点
+    {
+        bestp = cp;
+        return;
+    }
+    if(cw + w[i] <= c)//进入左子树
+    {
+        cw += w[i];
+        cp += p[i];
+        Backtrack(i+1);
+        cw -= w[i];
+        cp -= p[i];
+    }
+    if(Bound(i+1)>bestp)  Backtrack(i+1);  //进入右子树
+
+}
+template<class Typew, class Typep>
+Typep Knap<Typew, Typep>::Bound(int i)// 计算上界
+{
+    Typew cleft = c - cw;  // 剩余容量
+    Typep b = cp;
+    // 以物品单位重量价值递减序装入物品
+    while (i <= n && w[i] <= cleft)
+    {
+        cleft -= w[i];
+        b += p[i];
+        i++;
+    }
+    // 装满背包
+    if (i <= n)   b += p[i]/w[i] * cleft;
+    return b;
+} //用下面例子练习bound()函数值算法，掌握算法过程。
+
+
+
+template<class Typew,class Typep>
+Typep Knapsack(Typep p[],Typew w[],Typew c,int n)
+{
+    int i;
+    //为Knap::Backtrack初始化
+    Typew W = 0;
+    Typep P = 0;
+    Object *Q = new Object[n];
+    for(i=1; i<=n; i++)
+    {
+        Q[i-1].ID = i;
+        Q[i-1].d = 1.0 * p[i]/w[i];
+        P += p[i];
+        W += w[i];
+    }
+    if(W <= c)   return P;
+//装入所有物品
+    sort(Q,Q+n, compare);
+//依物品单位重量价值排序
+
+    Knap<Typew,Typep> K;
+    K.p = new Typep[n+1];
+    K.w = new Typew[n+1];
+    for( i=1; i<=n; i++)
+    {
+        K.p[i] = p[Q[i-1].ID];
+        K.w[i] = w[Q[i-1].ID];
+    }
+    K.cp = 0;
+    K.cw = 0;
+    K.c = c;
+    K.n = n;
+    K.bestp = 0;
+    K.Backtrack(1);  //回溯搜索
+    delete []Q;
+    delete []K.w;
+    delete []K.p;
+    return K.bestp;
+}
+
+int main()
+{
+    // int n = 4;//物品数
+    // int c = 7;//背包容量
+    // int p[] = {0,9,10,7,4};//物品价值 下标从1开始
+    // int w[] = {0,3,5,2,1};//物品重量 下标从1开始
+
+    int n = 3;//物品数
+    int c = 50;//背包容量
+    int p[] = {0,60,120,100};//物品价值 下标从1开始
+    int w[] = {0,10,30,20};//物品重量 下标从1开始
+
+    cout<<"背包容量为："<<c<<endl;
+    cout<<"物品重量和价值分别为："<<endl;
+    for(int i=1; i<=n; i++)
+        cout<<"("<<w[i]<<","<<p[i]<<") ";
+    cout<<endl;
+    cout<<"背包能装下的最大价值为："<<Knapsack(p,w,c,n)<<endl;
+    return 0;
+}

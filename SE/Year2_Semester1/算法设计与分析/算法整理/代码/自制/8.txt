@@ -1,0 +1,63 @@
+//最小生成树 Prim 读文件
+#include <fstream>
+#include <iostream>
+using namespace std;
+#define inf 9999;
+const int N = 6;
+ifstream fin("ex1.txt");
+
+template<class Type>
+void Prim(int n,Type c[][N+1])
+{
+    Type lowcost[N+1];//记录c[j][closest]的最小权值
+    int closest[N+1];//V-S中点j在S中的最邻接顶点
+    bool s[N+1];
+    int i,k;
+    s[1] = true; /*从顶点1开始*/
+    for(i=2; i<=n; i++) //初始化
+    {
+        lowcost[i] = c[1][i];
+        closest[i] = 1;
+        s[i] = false;
+    }
+    for( i=1; i<n; i++)
+    {
+        Type min = inf;
+        int j = 1; /*从S之外求离S中某最近的顶点*/
+        for(k=2; k<=n; k++)//找出V-S中使lowcost最小的顶点j
+            if((lowcost[k]<min)&&(!s[k]))
+            {
+                min = lowcost[k];
+                j = k;
+            }
+        cout<<j<<' '<<closest[j]<<endl;
+        s[j] = true;//将j添加到S中
+        for( k=2; k<=n; k++)//将j添加到S中后，修改closest和lowcost的值
+        {
+            if((c[j][k]<lowcost[k] && (!s[k])))
+            {
+                lowcost[k] = c[j][k];
+                closest[k] = j;
+            }
+        }
+    }
+}
+
+
+int main()
+{
+    int c[N+1][N+1];
+    cout<<"连通带权图的矩阵为："<<endl;
+    for(int i=1; i<=N; i++)
+    {
+        for(int j=1; j<=N; j++)
+        {
+            fin>>c[i][j];
+            cout<<c[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<"Prim算法最小生成树选边次序如下："<<endl;
+    Prim(N,c);
+    return 0;
+}
