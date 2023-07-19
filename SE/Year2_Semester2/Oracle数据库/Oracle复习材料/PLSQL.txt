@@ -1,0 +1,106 @@
+创建一个以员工号为参数，返回该员工所在部门平均工资的函数。编写PL/SQL块，输出7788号员工所在部门的平均工资。
+create or replace function func_avgsal(
+    p_empno emp.empno%type)
+return emp.sal%type
+as
+    v_deptno emp.deptno%type;
+    v_avgsal emp.sal%type;
+begin
+select deptno into v_deptno from emp where empno=p_empno;
+select avg(sal) into v_avgsal from emp where deptno=v_deptno;
+return v_avgsal;
+end func_avgsal;
+/
+begin
+dbms_output.put_line(func_avgsal(7788));
+end;
+/
+创建一个函数，以员工号为参数，返回该员工的工资。并编写PL/SQL块，调用该函数求出所有员工的员工号，员工姓名和工资。
+create or replace function func_sal(
+p_empno emp.empno%type,
+p_ename out emp.ename%type)
+return emp.sal%type
+as
+     v_sal emp.sal%type;
+begin
+select sal into v_sal from emp where empno=p_empno;
+select ename into p_ename from emp where empno=p_empno;
+return v_sal;
+end func_sal;
+/
+declare
+v_sal emp.sal%type;
+p_ename emp.ename%type;
+begin
+for v_emp in (select distinct empno from emp where empno is not null) loop
+v_sal:=func_sal(v_emp.empno,p_ename);
+dbms_output.put_line(v_emp.empno||' '||p_ename||' '||v_sal);
+end loop;
+end;
+/
+创建一个存储过程，以部门号为参数，查询该部门的平均工资，并输出该部门中比平均工资高的员工姓名、工资及所在员工号。编写PL/SQL块，调用此过程求出20号部门平均工资以及20号部门中比平均工资高的员工号、员工名和工资。
+create or replace procedure proc_show(
+p_deptno emp.deptno%type)
+as
+v_sal emp.sal%type;
+begin
+select avg(sal) into v_sal from emp where deptno=p_deptno;
+dbms_output.put_line(p_deptno||' '||'avgsal is:'||v_sal);
+for v_emp in (select * from emp where deptno=p_deptno and sal>v_sal)loop
+dbms_output.put_line(v_emp.empno||' '||v_emp.ename||' '||v_emp.sal);
+end loop;
+end proc_show;
+/
+begin
+proc_show(20);
+end;
+/
+创建一个存储过程，以部门号为参数，返回该部门的人数和最高工资和最低工资。编写PL/SQL块求出所有部门的人数、最高工资和最低工资。
+create or replace procedure proc_show3(
+p_deptno emp.deptno%type,
+p_count out number,
+p_maxsal out emp.sal%type,
+p_minsal out emp.sal%type)
+as
+v_sal emp.sal%type;
+begin
+select count(*),max(sal),min(sal) into p_count,p_maxsal,p_minsal from emp where deptno=p_deptno;
+exception
+when no_data_found then
+dbms_output.put_line('the department doesn't exists');
+end proc_show3;
+/
+declare
+v_count number;
+v_maxsal emp.sal%type;
+v_minsal emp.sal%type;
+begin
+for v_emp in (select distinct deptno from emp)loop
+proc_show3(v_emp.deptno,v_count,v_maxsal,v_minsal);
+dbms_output.put_line(v_emp.deptno||' '||v_count||' '||v_maxsal||' '||v_minsal);
+end loop;
+end;
+/
+创建一个存储过程，以员工号为参数，修改该员工的工资。若该员工属于10号部门，则工资增加140元；若属于20号部门，则工资增加200元；若属于30号部门，则工资增加250元；若属于其他部门，则工资增长300元。调用该过程为所有员工修改工资。
+create or replace procedure pro_up(
+p_empno emp.empno%type)
+as
+v_deptno emp.deptno%type;
+v_inc number;
+begin
+select deptno into v_deptno from emp where empno=p_empno;
+case v_deptno
+when 10 then v_inc:=140;
+when 20 then v_inc:=200;
+when 30 then v_inc:=250;
+else v_inc:=300;
+end case;
+update emp set sal=sal+v_inc where empno=p_empno;
+end pro_up;
+/
+begin
+for v_emp in (select distinct empno from emp where empno is not null) loop
+pro_up(v_emp.empno);
+end loop;
+end;
+/ 

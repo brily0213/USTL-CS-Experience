@@ -1,0 +1,32 @@
+创建用户
+create user user1 identified by user1 default tablespace users quota 5M on users password expire account lock;
+修改用户
+alter user user1 identified by user1 account unlock;drop user user01 CASCADE;
+当前系统中具有sysdba权限的用户名查询
+select * from v$pwfile_users;
+设置角色生效或失效,删除角色
+set role none; set role role1 identified by role1; drop role role1;
+屏蔽用户所有角色
+alter user user1 default role none;
+激活用户的某些角色
+alter user user1 default role connect,dba;
+激活用户所有角色
+alter user user1 default role all;
+激活除了某个角色外的其他所有角色
+alter user user1 default role all except dba;
+1、创建新的概要文件myprofile1，如果用户连续登录3次失败则锁定账户2天，密码有限期为7天，口令宽限期为3天。
+create profile myprofile1 limit
+FAILED_LOGIN_ATTEMPTS 3
+PASSWORD_LOCK_TIME 2
+PASSWORD_LIFE_TIME 7
+PASSWORD_GRACE_TIME 3;
+2、创建一个名字为myprofile2的概要文件，要求每个用户最多可以创建3个并发会话；每个会话持续时间最长为30分钟；如果会话在连续10分钟内空闲，则结束会话。
+create profile myprofile2 limit
+SESSIONS_PER_USER 3
+CONNECT_TIME 30
+IDLE_TIME 10;
+3、将概要文件myprofile1分配给用户usera_exer
+alter user usera_exer profile myprofile1;
+4、查看概要文件myprofile1的相关信息(dba_profile)，然后删除已创建的概要文件myprofile1。
+select profile,resource_name,resource_type,limit from dba_profiles where profile='MYPROFILE1'；
+drop profile myprofile1 CASCADE;

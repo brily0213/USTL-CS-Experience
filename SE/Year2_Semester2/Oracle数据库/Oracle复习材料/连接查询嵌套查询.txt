@@ -1,0 +1,25 @@
+查询至少有一个员工的所有部门信息
+select d.*,ed.count from dept d,(select deptno,count(empno) count from emp group by deptno having count(empno) >=1) ed where d.deptno=ed.deptno;
+查询薪金比’SMITH’多的所有员工。
+select * from emp where sal>(select sal from emp where ename='SMITH');
+查询受雇日期早于其直接上级的所有员工
+select a.ename from emp a where a.hiredate<(select hiredate from emp b where b.empno=a.mgr);
+查询所有部门名称和及其员工信息，包括那些没有员工的部门
+select t1.*,t2.dname from emp t1 right join dept t2 on t1.deptno=t2.deptno;
+查询所有工种为’CLERK’（办事员）的员工姓名及其部门名称。
+select ename,dname from emp t1,dept t2 where t1.deptno=t2.deptno and job='CLERK';
+查询最低薪金大于3500的各种工作。
+select job from emp group by job having min(sal)>3500;
+查询在部门’SALES’（销售部）工作的员工的姓名，假定不知道销售部的部门编号。
+select ename from emp where empno in(select empno from emp where deptno=(select deptno from dept where dname='SALES'));
+查询薪金高于公司平均薪金的所有员工。
+select * from emp where sal>(select avg(sal) from emp);
+查询与’SCOTT’从事相同工作的所有员工。
+select empno,ename from emp where job=(select job from emp where ename='SCOTT');
+查询薪金等于部门30中某个员工的薪金的所有员工的姓名和薪金。
+select ename,sal from emp where sal in(select sal from emp where deptno=30);
+查询在每个部门工作的员工数量、平均工资和平均工作年限。
+select deptno,count(*) num,round(avg(sal)) 平均工资,round(avg(round((sysdate-hiredate)/365))) 平均工作年限 from emp group by deotno;
+查询所有部门的详细信息和部门人数。
+select d.*,de.num from dept d,(select deptno,count(*) num from emp group by deptno) de where d.deptno=de.deptno;
+查询各个部门号、部门名称、部门所在地以及部门领导的姓名。

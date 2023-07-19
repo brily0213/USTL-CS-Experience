@@ -1,0 +1,71 @@
+创建一个触发器，禁止在休息日改变雇员信息。
+create or replace trigger trg_emp1
+before insert or update or delete on emp
+begin
+if to_char(sysdate,'DY','NLS_DATE_LANGUAGE=AMERICAN')in('SAT','SUN')
+then
+raise_application_error(-20005,'不允许在休息日修改员工信息');
+end if;
+end trg_emp1;
+为emp表创建一个触发器，当执行插入操作时，统计操作后员工人数；当执行更新工资操作时，统计更新后员工平均工资；当执行删除操作时，统计删除后各个部门的人数。
+create or replace trigger trg_emp2
+after insert or update or delete on emp
+declare
+v_count number;
+v_sal number(6,2);
+begin
+if inserting then
+select count(*) into v_count from emp;
+dbms_output.put_line(v_count);
+elsif updating then
+select avg(sal) into v_sal from emp;
+dbms_output.putline(v_sal);
+else
+for v_dept in (select deptno,count(*) num from emp group by deptno) loop
+end loop;
+end if;
+end trg_emp2;
+为employees表创建一个触发器，当插入新员工时显示新员工的员工号、员工名；当更新员工工资时，显示修改前后员工工资；当删除员工时，显示被删除的员工号、员工名。
+create or replace trigger trg_emp3
+before insert or update or delete on emp
+for each row
+begin
+if inserting then
+dbms_output.put_line(:new.empno||' '||:new.ename);
+elsif updating then
+dbms_output.put_line(:old.sal||' '||:new.sal);
+else
+dbms_output.put_line(:old.empno||' '||:old.ename);
+end if;
+end trg_emp3;
+/
+创建一个insert触发器，当在员工表EMP中插入一条新记录时，不允许在员工编号中出现重复的编号或出现空值。
+create or replace trigger trg_emp4
+before insert on emp
+for each row
+declare
+v_count number;
+begin
+select count(*) into v_count from emp where empno=:new.empno;
+if v_count=1 then
+raise_application_error(-20001,'职工号存在，不能插入');
+elsif :new.empno is null then
+raise_application_error(-20002,'职工号不能为空');
+end if;
+end trg_emp4;
+/
+创建一个insert触发器，当在员工表EMP中插入一条新记录时，Deptno(部门号码)必须是已经存在的部门号码，且Sal应该2000~8000之间。
+create or replace trigger trg_emp5
+before insert on emp
+for each row
+declare
+v_count number;
+begin
+select count(*) into v_count from dept where deptno=:new.deptno;
+if v_count=0 then
+elsif :new.sal<2000 or :new.sal>8000 then
+end if;
+end trg_emp5;
+/
+创建一个insert触发器，当在员工表EMP中插入一条新记录时，给出‘你已经插入了一条新记录！！！’的提示信息。before insert on emp
+创建一个触发器，禁止用户删除DEPT表中的记录。before delete on dept
