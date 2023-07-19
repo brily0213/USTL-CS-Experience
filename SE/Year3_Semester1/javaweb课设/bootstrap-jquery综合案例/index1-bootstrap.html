@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="UTF-8" />
+   <title>内容管理</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- 引入 Bootstrap -->
+   <link href="css/bootstrap.css" rel="stylesheet">
+   <!-- HTML5 Shiv 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+   <!--[if lt IE 9]>
+         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+      <![endif]-->
+</head>
+
+<body>
+   <div class="header">
+      <nav class="navbar navbar-default" role="navigation">
+         <div class="container">
+            <div class="navbar-header">
+               <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+               </button>
+               <a href="#" class="navbar-brand">
+                  后台管理系统
+               </a>
+            </div>
+            <div class="collapse navbar-collapse">
+               <ul class="nav navbar-nav">
+                  <li><a href="#">后台首页</a></li>
+                  <li><a href="#">用户管理</a></li>
+                  <li class="active"><a href="#">内容管理</a></li>
+               </ul>
+               <ul class="nav navbar-nav navbar-right">
+                  <li class='dropdown'>
+                     <a id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">admin <span class="caret"></span></a>
+                     <ul class="dropdown-menu" aria-labelledby="dLabel">
+                        <li><a href="#">前台首页</a></li>
+                        <li><a href="#">个人主页</a></li>
+                        <li><a href="#">个人设置</a></li>
+                        <li><a href="#">账户中心</a></li>
+                        <li><a href="#">我的收藏</a></li>
+                     </ul>
+                  </li>
+                  <li><a href="#"><span class="glyphicon glyphicon-off"></span> 退出</a></li>
+               </ul>
+            </div>
+         </div>
+      </nav>
+   </div>
+   <div class="container">
+      <div class="row">
+         <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+            <div class="list-group">
+               <a href="#" class="list-group-item active">内容管理</a>
+               <a href="#" class="list-group-item">添加内容</a>
+            </div>
+         </div>
+         <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+            <div class="panel panel-default">
+               <div class="panel panel-heading">
+                  <h1>内容管理</h1>
+                  <ul class="nav nav-tabs">
+                     <li class="active">
+                        <a href="#">内容管理</a>
+                     </li>
+                     <li><a href="#">添加内容</a></li>
+                  </ul>
+               </div>
+               <div class="panel panel-body">
+                  <table class="table">
+                     <thead>
+                        <tr>
+                           <th>文章标题</th>
+                           <th>作者</th>
+                           <th>发布时间</th>
+                           <th>操作</th>
+                        </tr>
+                     </thead>
+                     
+                     <tbody>
+                        <tr>
+                           <th scope="row">国内首个汽车资讯互动平台诞生 </th>
+                           <td>李晓乐</td>
+                           <td>2020/08/08</td>
+                           <td>
+                              <div role="presentation" class="dropdown">
+                                 <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href='#'
+                                    role="button" aria-haspopup="true" aria-expanded="false">
+                                    操作<span class="caret"></span>
+                                 </button>
+                                 <ul class="dropdown-menu">
+                                    <li><a href="#">编辑</a></li>
+                                    <li><a href="#">删除</a></li>
+                                    <li><a href="#">全局置顶</a></li>
+                                 </ul>
+                              </div>
+                           </td>
+
+                        </tr>
+                        <tr>
+                           <th scope="row">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, molestias?
+                           </th>
+                           <td>李晓乐</td>
+                           <td>2020/08/08</td>
+                           <td>
+                              <div role="presentation" class="dropdown">
+                                 <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href='#'
+                                    role="button" aria-haspopup="true" aria-expanded="false">
+                                    操作<span class="caret"></span>
+                                 </button>
+                                 <ul class="dropdown-menu">
+                                    <li><a href="#">编辑</a></li>
+                                    <li><a href="#">删除</a></li>
+                                    <li><a href="#">全局置顶</a></li>
+                                 </ul>
+                              </div>
+                           </td>
+
+                        </tr>
+                        <tr>
+                           <th scope="row">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, dolores. </th>
+                           <td>李晓乐</td>
+                           <td>2020/08/08</td>
+                           <td>
+                              <div role="presentation" class="dropdown">
+                                 <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href='#'
+                                    role="button" aria-haspopup="true" aria-expanded="false">
+                                    操作<span class="caret"></span>
+                                 </button>
+                                 <ul class="dropdown-menu">
+                                    <li><a href="#">编辑</a></li>
+                                    <li><a href="#">删除</a></li>
+                                    <li><a href="#">全局置顶</a></li>
+                                 </ul>
+                              </div>
+                           </td>
+
+                        </tr>
+                        <tr>
+                           <th scope="row">Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, totam.
+                           </th>
+                           <td>李晓乐</td>
+                           <td>2020/08/08</td>
+                           <td>
+                              <div role="presentation" class="dropdown">
+                                 <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href='#'
+                                    role="button" aria-haspopup="true" aria-expanded="false">
+                                    操作<span class="caret"></span>
+                                 </button>
+                                 <ul class="dropdown-menu">
+                                    <li><a href="#">编辑</a></li>
+                                    <li><a href="#">删除</a></li>
+                                    <li><a href="#">全局置顶</a></li>
+                                 </ul>
+                              </div>
+                           </td>
+
+                        </tr>
+                        <tr>
+                           <th scope="row">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus, placeat.
+                           </th>
+                           <td>李晓乐</td>
+                           <td>2020/08/08</td>
+                           <td>
+                              <div role="presentation" class="dropdown">
+                                 <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href='#'
+                                    role="button" aria-haspopup="true" aria-expanded="false">
+                                    操作<span class="caret"></span>
+                                 </button>
+                                 <ul class="dropdown-menu">
+                                    <li><a href="#">编辑</a></li>
+                                    <li><a href="#">删除</a></li>
+                                    <li><a href="#">全局置顶</a></li>
+                                 </ul>
+                              </div>
+                           </td>
+
+                        </tr>
+                        <tr>
+                           <th scope="row">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nam, rerum. </th>
+                           <td>李晓乐</td>
+                           <td>2020/08/08</td>
+                           <td>
+                              <div role="presentation" class="dropdown">
+                                 <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" href='#'
+                                    role="button" aria-haspopup="true" aria-expanded="false">
+                                    操作<span class="caret"></span>
+                                 </button>
+                                 <ul class="dropdown-menu">
+                                    <li><a href="#">编辑</a></li>
+                                    <li><a href="#">删除</a></li>
+                                    <li><a href="#">全局置顶</a></li>
+                                 </ul>
+                              </div>
+                           </td>
+
+                        </tr>
+                     </tbody>
+                  </table>
+                  <nav class="pull-right">
+                     <ul class="pagination">
+                        <li class="disabled"><a href="#"><span>&laquo;</span></a></li>
+                        <li class="active"><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#">6</a></li>
+                        <li><a href="#"><span>&raquo;</span></a></li>
+                     </ul>
+                  </nav>
+               </div>
+            </div>
+
+         </div>
+      </div>
+   </div>
+  
+   <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+   <script src="js/jquery.js"></script>
+   <!-- 包括所有已编译的插件 -->
+   <script src="js/bootstrap.js"></script>
+</body>
+
+</html>
